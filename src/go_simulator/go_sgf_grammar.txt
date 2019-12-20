@@ -1,0 +1,34 @@
+GameTree   = <"("> Sequence { GameTree } <")">
+<Sequence>   = Node { Node }
+<Node>       = <";"> { Property }
+<Property>   = (BlackMove | WhiteMove | <PropIdent PropValue { PropValue }>)
+<PropIdent> = (NamedProp | UnnamedProp)
+<PropValue> = <"["> CValueType <"]">
+<NamedProp> = (Handicap | BlackPlayer | WhitePlayer | BlackRank | WhiteRank)
+<UnnamedProp> = !NamedProp #"[A-Z]+"
+<CValueType> = (ValueType | Compose)
+<ValueType> = (None | Number | Real | Double | Color | SimpleText | Text | Point | Move | Stone)
+<Compose> = ValueType ":" ValueType
+
+Handicap = <#"HA">
+BlackPlayer = <#"PB">
+WhitePlayer = <#"PW">
+BlackRank = <#"BR">
+WhiteRank = <#"WR">
+WhiteMove = <"W["> #"[a-zA-Z]*" <"]">
+BlackMove = <"B["> #"[a-zA-Z]*" <"]">
+Digit = #"[0-9]"
+None = ""
+
+Number = [("+"|"-")] Digit { Digit }
+Real = Number ["." Digit { Digit }]
+
+Double = ("1" | "2")
+Color = ("B" | "W")
+
+<SimpleText> = #"[^\[\]]+"
+<Text> = SimpleText
+
+<Point> = #"[a-zA-Z]{2}"
+Move = (Point | None)
+Stone = Point
