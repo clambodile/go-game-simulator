@@ -26,8 +26,8 @@
    :right-edge "┤"
    :bottom-right "┘"
    :center "┼"
-   :black "b"
-   :white "w"
+   :black "o"
+   :white "•"
    })
 
 (defn pprint
@@ -60,10 +60,3 @@
     (doseq [line lines]
       (println line))))
 
-(def my-board
-  (-> (empty-board 19 19)
-      (apply-move [:black [4 4]])
-      (assoc-in [3 3] :white)))
-
-(pprint my-board)
-;; => nil
