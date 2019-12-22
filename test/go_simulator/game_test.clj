@@ -13,4 +13,6 @@
     (is (= '([:black [0 0]] [:white [0 1]] [:black [1 0]])
            (main-branch test-game)))))
 
-(main-branch test-game)
+(deftest branch-depth-test
+  (testing "Returns the max depth of a branch."
+    (is (= 3 (branch-depth test-game)))))

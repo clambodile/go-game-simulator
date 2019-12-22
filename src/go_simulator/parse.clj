@@ -27,27 +27,24 @@
   "Makes [a b c] match [a [b [c]]]"
   [node]
   (cond (empty? node) nil
-        (sequential? (first node)) (update (normalize (first node)) :children #(remove nil? (conj % (normalize (rest node)))))
+        (sequential? (first node))
+        (update (normalize (first node)) :children #(remove empty? (conj % (normalize (rest node)))))
         (nil? node) nil
         :else {:move node :children '()}))
-                                        (def filename "alpha_lee_game_5.sgf")
+
+(def filename "alpha_lee_game_5.sgf")
                                         ;(def filename "SHORTENED_alpha_lee_game_5.sgf")
                                         ;(def filename "SIMPLIFIED_20932240-034-BTC_USD-santana3.sgf")
                                         ;(def filename "20932240-034-BTC_USD-santana3.sgf")
-;(def filename "simple_variations.sgf")
+                                        ;(def filename "simple_variations.sgf")
 
-(def file
+(defn read
+  "Reads a .sgf file and parses into the game format."
+  [filename]
   (as-> filename _
     (slurp _)
     (str/split _ #"\n")
-    (str/join "" _)))
-
-                                        ;file
-;(insta/transform transformer (sgf-parser file))
-
-(def my-game (normalize (insta/transform transformer (sgf-parser file))))
-
-(:move (first (:children my-game)))
-
-(map :move (take-while (comp not nil?) (iterate (comp first :children) my-game)))
-
+    (str/join "" _)
+    (sgf-parser _)
+    (insta/transform transformer _)
+    (normalize _)))
